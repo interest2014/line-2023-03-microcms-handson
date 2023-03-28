@@ -1,8 +1,6 @@
 import "../styles/global.css";
 import { useEffect, useState, createContext } from "react";
-
 export const LiffContext = createContext({});
-
 export default function App({ Component, pageProps }) {
   // [liffObject, profile]
   const [[liffObject, profile], setLiffState] = useState([null, null]);
@@ -14,6 +12,14 @@ export default function App({ Component, pageProps }) {
         .then(() => {
           if (liff.isLoggedIn()) {
             // プロフィール情報の取得をする
+            liff
+              .getProfile()
+              .then((profile) => {
+                setLiffState([liff, profile]);
+              })
+              .catch((err) => {
+                console.warn({ err });
+              });
           } else {
             setLiffState([liff, null]);
           }
